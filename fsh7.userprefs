@@ -1,15 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="fsh7/Tutorial.fs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="fsh7/config.fs">
     <Files>
-      <File FileName="fsh7/Tutorial.fs" Line="48" Column="5" />
+      <File FileName="fsh7/main.fs" Line="11" Column="18" />
+      <File FileName="fsh7/i2c.fs" Line="2" Column="1" />
+      <File FileName="fsh7/config.fs" Line="12" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="fsh7" expanded="True">
             <Node name="References" expanded="True" />
-            <Node name="Tutorial.fs" selected="True" />
+            <Node name="config.fs" selected="True" />
           </Node>
         </State>
       </Pad>
