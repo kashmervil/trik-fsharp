@@ -3,10 +3,11 @@ module Config
 open System
 open System.Xml
 open System.Diagnostics
-    type PowerMotorMapping  = { port: string; i2cCommandNumber: int; invert: bool; }
-    type AnalogSensorMapping = { port: string; i2cCommandNumber: int }
-    type EncoderMapping = { port: string; i2cCommandNumber: int }
-    type SensorMapping = { port: string; deviceFile: string; defaultType: string; } 
+//open Mono.Unix.Native
+type PowerMotorMapping  = { port: string; i2cCommandNumber: int; invert: bool; }
+type AnalogSensorMapping = { port: string; i2cCommandNumber: int }
+type EncoderMapping = { port: string; i2cCommandNumber: int }
+type SensorMapping = { port: string; deviceFile: string; defaultType: string; } 
 
 type Config (path:string) =
 
@@ -33,14 +34,20 @@ type Config (path:string) =
                     i2cCommandNumber = Convert.ToInt32(node.Attributes.["i2cCommandNumber"].Value, 16);
                 }) )
         |> dict
-    
+    let Syscall_system cmd  = 
+        let args = sprintf "-c '%s'" cmd
+        printf "%s" cmd
+        let proc = Process.Start("/bin/sh", args)
+        proc.WaitForExit()
+        if proc.ExitCode  <> 0 then
+            printf "Init script failed at '%s'" cmd
+        else ()
+        printfn " Done"
+  
     do
-      (doc.SelectSingleNode "//config/initScript").InnerText.Split [| '\n' |]
-        |> Array.map (fun s -> s.Trim() )
-        |> Array.filter (fun s -> not (s.Length = 0) )
-        |> Array.map (fun s -> s.Split([|' '|], 2) )
-        |> ignore
-        //|> Array.iter (fun ss ->  Process.Start(ss.[0], ss.[1]).WaitForExit() )
-        
+        (doc.SelectSingleNode "//config/initScript").InnerText.Split([| '\n' |])
+                        |> Seq.filter (fun s -> s.Trim() <> "")
+                        |> Seq.iter Syscall_system
+      
     member x.PowerMotor = powerMotors
     member x.analogSensor = analogSensors
